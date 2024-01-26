@@ -12,7 +12,7 @@
 #'
 #' @examples
 #' ttm_expect_true(TRUE)
-#' ttm_expect_true(FALSE)
+#' try(ttm_expect_true(FALSE))
 ttm_expect_true <- function(object, info = NULL, label = NULL, verbose=0) {
   enquo_object <- rlang::enquo(object)
   .ttm_mode <- getOption(".ttm_mode")
@@ -31,12 +31,17 @@ ttm_expect_true <- function(object, info = NULL, label = NULL, verbose=0) {
 
       act <- testthat:::quasi_label(rlang::enquo(object), label, arg = "object")
       act$val <- as.vector(act$val)
-      # testthat:::expect_waldo_constant(act, TRUE, info = info)
-      constant=TRUE
-      comp <- testthat:::waldo_compare(act$val, constant, x_arg = "actual",
-                                       y_arg = "expected")
-      comp
-      length(comp) < .5
+      try_ewe <- try({
+        testthat:::expect_waldo_constant(act, TRUE, info = info)
+      }, silent=T)
+      !("try-error" %in% class(try_ewe))
+
+
+      # constant=TRUE
+      # comp <- testthat:::waldo_compare(act$val, constant, x_arg = "actual",
+      #                                  y_arg = "expected")
+      # comp
+      # length(comp) < .5
     }
     if (passes_testthat) {
       testthat::expect_true(!!enquo_object, info=info, label=label)

@@ -44,10 +44,15 @@ ttm_expect_equal <- function(object, expected, ...,
       act <- testthat::quasi_label(rlang::enquo(object), label, arg = "object")
       exp <- testthat::quasi_label(rlang::enquo(expected), expected.label, arg = "expected")
       if (testthat::edition_get() >= 3) {
-        # testthat:::expect_waldo_equal("equal", act, exp, info, ..., tolerance = tolerance)
-        comp <- testthat:::waldo_compare(act$val, exp$val, ..., x_arg = "actual",
-                              y_arg = "expected")
-        (length(comp) < .5)
+        try_ewe <- try({
+          testthat:::expect_waldo_equal("equal", act, exp, info, ..., tolerance = tolerance)
+        }, silent=T)
+        !("try-error" %in% class(try_ewe))
+
+        # waldo_compare is bad b/c it thinks 6L and 6 aren't equal
+        # comp <- testthat:::waldo_compare(act$val, exp$val, ..., x_arg = "actual",
+        #                       y_arg = "expected")
+        # (length(comp) < .5)
       } else {
         if (!is.null(tolerance)) {
           comp <- compare(act$val, exp$val, ..., tolerance = tolerance)
