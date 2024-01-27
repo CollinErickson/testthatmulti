@@ -10,7 +10,6 @@ Description: Runs tests using the testthat package but allows for multiple
     such as numeric instability or using random data.
 License: GPL (>= 3)
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.2.3
 Suggests:
     testthat (>= 3.0.0),

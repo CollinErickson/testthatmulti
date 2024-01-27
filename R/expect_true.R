@@ -27,14 +27,15 @@ ttm_expect_true <- function(object, info = NULL, label = NULL, verbose=0) {
 
     # browser()
     passes_testthat <- {
-      # Run guts of expect_true here, but not an actual test
+      isTRUE(object)
 
-      act <- testthat:::quasi_label(rlang::enquo(object), label, arg = "object")
-      act$val <- as.vector(act$val)
-      try_ewe <- try({
-        testthat:::expect_waldo_constant(act, TRUE, info = info)
-      }, silent=T)
-      !("try-error" %in% class(try_ewe))
+      # # Run guts of expect_true here, but not an actual test
+      # act <- testthat:::quasi_label(rlang::enquo(object), label, arg = "object")
+      # act$val <- as.vector(act$val)
+      # try_ewe <- try({
+      #   testthat:::expect_waldo_constant(act, TRUE, info = info)
+      # }, silent=T)
+      # !("try-error" %in% class(try_ewe))
 
 
       # constant=TRUE

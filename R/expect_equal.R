@@ -23,7 +23,8 @@ ttm_expect_equal <- function(object, expected, ...,
                              info = NULL, label = NULL,
                              expected.label = NULL,
                              verbose=0) {
-  if (exists("tteedb") && isTRUE(tteedb)) {browser("exists/debug")}
+  # cat('ttmee', object, expected, '\n')
+  # if (exists("tteedb") && isTRUE(tteedb)) {browser("exists/debug")}
   enquo_object <- rlang::enquo(object)
   enquo_expected <- rlang::enquo(expected)
   .ttm_mode <- getOption(".ttm_mode")
@@ -39,29 +40,38 @@ ttm_expect_equal <- function(object, expected, ...,
 
     # browser()
     passes_testthat <- {
-      # Run guts of expect_true here, but not an actual test
-
-      act <- testthat::quasi_label(rlang::enquo(object), label, arg = "object")
-      exp <- testthat::quasi_label(rlang::enquo(expected), expected.label, arg = "expected")
-      if (testthat::edition_get() >= 3) {
-        try_ewe <- try({
-          testthat:::expect_waldo_equal("equal", act, exp, info, ..., tolerance = tolerance)
-        }, silent=T)
-        !("try-error" %in% class(try_ewe))
-
-        # waldo_compare is bad b/c it thinks 6L and 6 aren't equal
-        # comp <- testthat:::waldo_compare(act$val, exp$val, ..., x_arg = "actual",
-        #                       y_arg = "expected")
-        # (length(comp) < .5)
-      } else {
-        if (!is.null(tolerance)) {
-          comp <- compare(act$val, exp$val, ..., tolerance = tolerance)
-        }
-        else {
-          comp <- compare(act$val, exp$val, ...)
-        }
-        comp$equal
+      ttc <- if (!is.null(tolerance)) {
+        testthat::compare(object, expected, ..., tolerance=tolerance)}
+      else {
+        testthat::compare(object, expected, ...)
       }
+      ttc$equal
+
+      # Fails 6, 6L
+      # waldo::compare(object, expected, ..., x_arg='actual', y_arg='expected')
+
+      # # Run guts of expect_true here, but not an actual test
+      # act <- testthat::quasi_label(rlang::enquo(object), label, arg = "object")
+      # exp <- testthat::quasi_label(rlang::enquo(expected), expected.label, arg = "expected")
+      # if (testthat::edition_get() >= 3) {
+      #   try_ewe <- try({
+      #     testthat:::expect_waldo_equal("equal", act, exp, info, ..., tolerance = tolerance)
+      #   }, silent=T)
+      #   !("try-error" %in% class(try_ewe))
+
+      # waldo_compare is bad b/c it thinks 6L and 6 aren't equal
+      # comp <- testthat:::waldo_compare(act$val, exp$val, ..., x_arg = "actual",
+      #                       y_arg = "expected")
+      # (length(comp) < .5)
+      # } else {
+      # if (!is.null(tolerance)) {
+      #   comp <- compare(act$val, exp$val, ..., tolerance = tolerance)
+      # }
+      # else {
+      #   comp <- compare(act$val, exp$val, ...)
+      # }
+      # comp$equal
+      # }
     }
     if (passes_testthat) {
       testthat::expect_equal(object=!!enquo_object, expected=!!enquo_expected, ...)

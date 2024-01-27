@@ -23,5 +23,5 @@ See `testthat::expect_true` for details.
 }
 \examples{
 ttm_expect_true(TRUE)
-ttm_expect_true(FALSE)
+try(ttm_expect_true(FALSE))
 }

@@ -15,7 +15,7 @@
 #'   ttm_expect_true(xx < .2)
 #' })
 ttm <- function(n, expr, verbose=0) {
-  if (exists("dbttm") && isTRUE(dbttm)) {browser("exists/debug")}
+  # if (exists("dbttm") && isTRUE(dbttm)) {browser("exists/debug")}
 
   stopifnot(is.numeric(n), length(n)==1, abs(n-round(n))<1e-8, n >= 1)
   n <- round(n)
