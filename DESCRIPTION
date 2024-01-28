@@ -1,6 +1,6 @@
 Package: testthatmulti
 Type: Package
-Title: Testing With testthat With Multple Attempts for Noisy Tests
+Title: Testing for R Packages With Multiple Attempts for Noisy Tests
 Version: 0.1.0
 Author: Collin Erickson
 Maintainer: Collin Erickson <collinberickson@gmail.com>
@@ -15,3 +15,4 @@ Suggests:
     testthat (>= 3.0.0),
     rlang
 Config/testthat/edition: 3
+Language: en-US
