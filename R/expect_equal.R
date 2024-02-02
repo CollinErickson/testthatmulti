@@ -13,18 +13,34 @@
 #' @export
 #'
 #' @examples
-#' ttm_expect_equal(TRUE, TRUE)
-#' ttm_expect_equal(1, 1)
-#' ttm_expect_equal(1:5, 1:5)
-#' # ttm_expect_equal(1, 2)
+#' set.seed(0)
+#'
+#' # 1 attempt, all pass
+#' ttm(1, {
+#'   ttm_expect_equal(TRUE, TRUE)
+#'   ttm_expect_equal(1, 1)
+#'   ttm_expect_equal(1:5, 1:5)
+#' })
+#'
+#' # Fails first 6 times, then passes
+#' ttm(100, {
+#'   x <- sample(1:6, 1)
+#'   print(x)
+#'   ttm_expect_equal(x, 3)
+#' })
+#'
+#' # Will always fail regardless of number of attempts
+#' try({
+#'   ttm(3, {
+#'     ttm_expect_equal(1, 2)
+#'   })
+#' })
 ttm_expect_equal <- function(object, expected, ...,
                              tolerance=if (testthat::edition_get() >=
                                            3) testthat::testthat_tolerance(),
                              info = NULL, label = NULL,
                              expected.label = NULL,
                              verbose=0) {
-  # cat('ttmee', object, expected, '\n')
-  # if (exists("tteedb") && isTRUE(tteedb)) {browser("exists/debug")}
   enquo_object <- rlang::enquo(object)
   enquo_expected <- rlang::enquo(expected)
   .ttm_mode <- getOption(".ttm_mode")
@@ -38,7 +54,6 @@ ttm_expect_equal <- function(object, expected, ...,
     }
 
 
-    # browser()
     passes_testthat <- {
       ttc <- if (!is.null(tolerance)) {
         testthat::compare(object, expected, ..., tolerance=tolerance)}
@@ -46,39 +61,10 @@ ttm_expect_equal <- function(object, expected, ...,
         testthat::compare(object, expected, ...)
       }
       ttc$equal
-
-      # Fails 6, 6L
-      # waldo::compare(object, expected, ..., x_arg='actual', y_arg='expected')
-
-      # # Run guts of expect_true here, but not an actual test
-      # act <- testthat::quasi_label(rlang::enquo(object), label, arg = "object")
-      # exp <- testthat::quasi_label(rlang::enquo(expected), expected.label, arg = "expected")
-      # if (testthat::edition_get() >= 3) {
-      #   try_ewe <- try({
-      #     testthat:::expect_waldo_equal("equal", act, exp, info, ..., tolerance = tolerance)
-      #   }, silent=T)
-      #   !("try-error" %in% class(try_ewe))
-
-      # waldo_compare is bad b/c it thinks 6L and 6 aren't equal
-      # comp <- testthat:::waldo_compare(act$val, exp$val, ..., x_arg = "actual",
-      #                       y_arg = "expected")
-      # (length(comp) < .5)
-      # } else {
-      # if (!is.null(tolerance)) {
-      #   comp <- compare(act$val, exp$val, ..., tolerance = tolerance)
-      # }
-      # else {
-      #   comp <- compare(act$val, exp$val, ...)
-      # }
-      # comp$equal
-      # }
     }
     if (passes_testthat) {
       testthat::expect_equal(object=!!enquo_object, expected=!!enquo_expected, ...)
     } else {
-      # next
-      # .ttm_nofails <<- FALSE
-      # assign(".ttm_nofails", FALSE, envir=globalenv())
       options(".ttm_nofails" = FALSE)
     }
   } else if (.ttm_mode == "mustpass") {

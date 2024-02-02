@@ -39,8 +39,26 @@ Test result
 Test that multi: expect equal
 }
 \examples{
-ttm_expect_equal(TRUE, TRUE)
-ttm_expect_equal(1, 1)
-ttm_expect_equal(1:5, 1:5)
-# ttm_expect_equal(1, 2)
+set.seed(0)
+
+# 1 attempt, all pass
+ttm(1, {
+  ttm_expect_equal(TRUE, TRUE)
+  ttm_expect_equal(1, 1)
+  ttm_expect_equal(1:5, 1:5)
+})
+
+# Fails first 6 times, then passes
+ttm(100, {
+  x <- sample(1:6, 1)
+  print(x)
+  ttm_expect_equal(x, 3)
+})
+
+# Will always fail regardless of number of attempts
+try({
+  ttm(3, {
+    ttm_expect_equal(1, 2)
+  })
+})
 }

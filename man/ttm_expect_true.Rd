@@ -22,6 +22,26 @@ Test result
 See `testthat::expect_true` for details.
 }
 \examples{
-ttm_expect_true(TRUE)
-try(ttm_expect_true(FALSE))
+set.seed(0)
+
+# 1 attempt, all pass
+ttm(1, {
+  ttm_expect_true(TRUE)
+  ttm_expect_true(1 == 1)
+  ttm_expect_true(all(1:5 == 1:5))
+})
+
+# Fails first 10 times, then passes
+ttm(100, {
+  x <- runif(1)
+  print(x)
+  ttm_expect_true(x < 0.1)
+})
+
+# Will always fail regardless of number of attempts
+try({
+  ttm(3, {
+    ttm_expect_true(1 == 2)
+  })
+})
 }

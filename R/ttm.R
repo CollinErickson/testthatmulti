@@ -9,57 +9,49 @@
 #'
 #' @examples
 #'
-#' ttm(20, {
-#'   xx <- runif(1)
-#'   cat('xx', xx, "\n")
-#'   ttm_expect_true(xx < .2)
+#' set.seed(0)
+#'
+#' # 1 attempt, all pass
+#' ttm(1, {
+#'   ttm_expect_true(TRUE)
+#'   ttm_expect_true(1 == 1)
+#'   ttm_expect_true(all(1:5 == 1:5))
+#' })
+#'
+#' # Fails first 10 times, then passes
+#' ttm(100, {
+#'   x <- runif(1)
+#'   print(x)
+#'   ttm_expect_true(x < 0.1)
+#' })
+#'
+#' # Will always fail regardless of number of attempts
+#' try({
+#'   ttm(3, {
+#'     ttm_expect_true(1 == 2)
+#'   })
 #' })
 ttm <- function(n, expr, verbose=0) {
-  # if (exists("dbttm") && isTRUE(dbttm)) {browser("exists/debug")}
-
   stopifnot(is.numeric(n), length(n)==1, abs(n-round(n))<1e-8, n >= 1)
   n <- round(n)
 
   on.exit({
-    # rm(.ttm_nofails, envir=globalenv())
-    # rm(.ttm_mode, envir=globalenv())
     options(.ttm_mode = NULL)
   }, add=T, after=T)
 
   for (i_ttm in 1:n) {
-    # .ttm_nofails <- TRUE
-    # assign(".ttm_nofails", TRUE, envir=globalenv())
     options(".ttm_nofails" = TRUE)
 
     if (verbose >= 1) {
       cat("i:", i_ttm, "\n")
     }
-    # browser()
+
     if (i_ttm < n) {
-      # .ttm_mode <- "canfail"
-      # assign(".ttm_mode", "canfail", envir=globalenv())
       options(".ttm_mode" = "canfail")
-      # ttm_expect_true <- function(x, ...) {
-      #   print('in fake ttmet')
-      #   if (isTRUE(x)) {
-      #     testthat::expect_true(x, ...)
-      #   } else {
-      #     # next
-      #     .ttm_nofails <<- FALSE
-      #   }
-      # }
     } else {
-      # .ttm_mode <- "mustpassepic"
-      # assign(".ttm_mode", "mustpass", envir=globalenv())
       options(".ttm_mode" = "mustpass")
-      #   ttm_expect_true <- testthat::expect_true
     }
-    # print(ttm_expect_true)
-    # eval expr now
-    # expr
-    # rlang::locally(expr)
-    # rlang::with_env(rlang::current_env(), expr)
-    # rlang::with_env(globalenv(), expr)
+
     eval(substitute(expr))
 
     .ttm_nofails <- getOption(".ttm_nofails")
@@ -75,6 +67,7 @@ ttm <- function(n, expr, verbose=0) {
   # All tests passed before end
   return(invisible())
 }
+
 if (F) {
   ttm(2, {
     xx <- runif(1)

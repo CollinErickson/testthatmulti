@@ -21,9 +21,26 @@ Test that with multiple attempts
 }
 \examples{
 
-ttm(20, {
-  xx <- runif(1)
-  cat('xx', xx, "\n")
-  ttm_expect_true(xx < .2)
+set.seed(0)
+
+# 1 attempt, all pass
+ttm(1, {
+  ttm_expect_true(TRUE)
+  ttm_expect_true(1 == 1)
+  ttm_expect_true(all(1:5 == 1:5))
+})
+
+# Fails first 10 times, then passes
+ttm(100, {
+  x <- runif(1)
+  print(x)
+  ttm_expect_true(x < 0.1)
+})
+
+# Will always fail regardless of number of attempts
+try({
+  ttm(3, {
+    ttm_expect_true(1 == 2)
+  })
 })
 }
