@@ -1,3 +1,9 @@
+I submitted this for a second time on 2/1/24 and received an email on 2/3/24
+that I used the wrong kind of quotes in the DESCRIPTION file. I have fixed that
+and am resubmitting with no other changes.
+
+-- Previous submission notes --
+
 I submitted this on 1/28/24 and received an email on 1/30/24 that I have to
 fix a few things.
 
@@ -20,7 +26,7 @@ I changed it to be enclosed within a try() statement.
 
 ## R CMD check results
 
-Local Windows (2/1/24): 0 errors/warnings/notes
+Local Windows (2/3/24): 0 errors/warnings/notes
 
 GitHub Actions (2/1/24): Status: OK
 
