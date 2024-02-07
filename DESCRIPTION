@@ -11,6 +11,8 @@ Description: Runs tests using the 'testthat' package but allows for multiple
 License: GPL (>= 3)
 Encoding: UTF-8
 RoxygenNote: 7.2.3
+URL: https://github.com/CollinErickson/testthatmulti
+BugReports: https://github.com/CollinErickson/testthatmulti/issues
 Suggests:
     testthat (>= 3.0.0),
     rlang
