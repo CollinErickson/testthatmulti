@@ -83,3 +83,52 @@ test_that(".ttm_mode error", {
 test_that("ttm_expect_true edge cases", {
   expect_no_error(ttm_expect_equal(1, 1))
 })
+
+# ttm_expect_error ----
+test_that("ttm_expect_error", {
+  expect_no_error(
+    ttm(1, {
+      ttm_expect_error(stop('error'))
+    })
+  )
+
+  expect_error(
+    ttm(1, {
+      ttm_expect_error(('error'))
+    })
+  )
+
+  expect_no_error(
+    ttm(100, {
+
+      ttm_expect_error(
+      if (runif(1) > 0.1) {stop('error')}
+      )
+    })
+  )
+})
+
+
+# ttm_expect_no_error ----
+test_that("ttm_expect_no_error", {
+  expect_no_error(
+    ttm(1, {
+      ttm_expect_no_error(('error'))
+    })
+  )
+
+  expect_error(
+    ttm(1, {
+      ttm_expect_no_error(stop('error'))
+    })
+  )
+
+  expect_no_error(
+    ttm(100, {
+
+      ttm_expect_no_error(
+        if (runif(1) < 0.1) {stop('error')}
+      )
+    })
+  )
+})
