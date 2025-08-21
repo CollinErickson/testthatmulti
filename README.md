@@ -8,6 +8,8 @@
 [![R-CMD-check](https://github.com/CollinErickson/testthatmulti/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CollinErickson/testthatmulti/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/CollinErickson/testthatmulti/branch/master/graph/badge.svg)](https://app.codecov.io/gh/CollinErickson/testthatmulti?branch=master)
+[![Codecov test
+coverage](https://codecov.io/gh/CollinErickson/testthatmulti/graph/badge.svg)](https://app.codecov.io/gh/CollinErickson/testthatmulti)
 <!-- badges: end -->
 
 The goal of testthatmulti is to enhance the R package `testthat` so that
