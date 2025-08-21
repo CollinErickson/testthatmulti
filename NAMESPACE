@@ -2,4 +2,6 @@
 
 export(ttm)
 export(ttm_expect_equal)
+export(ttm_expect_error)
+export(ttm_expect_no_error)
 export(ttm_expect_true)
