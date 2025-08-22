@@ -43,9 +43,20 @@ ttm_expect_true <- function(object, info = NULL, label = NULL, verbose=0) {
     if (verbose >= 1) {
       print('in fake mode canfail')
     }
-
+    # browser()
+    # passes_testthat <- {
+    #   isTRUE(object)
+    # }
+    # Not sure all this is needed, tried to fix some test stuff
     passes_testthat <- {
-      isTRUE(object)
+      isTRUE(
+        rlang::eval_tidy(
+          rlang::quo_get_expr(enquo_object),
+          # env=rlang::caller_env(n=4)
+          # env=parent.frame()
+          env=rlang::quo_get_env(enquo_object)
+        )
+      )
     }
     if (passes_testthat) {
       # Use placeholder to avoid randomness (this time could give different result)

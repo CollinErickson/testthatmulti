@@ -24,15 +24,18 @@ test_that("ttm expect_true", {
   expect_error(ttm(3, {
     ttm_expect_true(FALSE)
   }))
-
-  # # Refer to an object outside of ttm
-  # expect_no_error({
-  #   aa <- TRUE
-  #   ttm(5, {
-  #     ttm_expect_true(aa)
-  #   })
-  # })
 })
+
+aa <- TRUE
+test_that("ttm_expect_true - refer to outside obj", {
+  # Refer to an object outside of ttm
+  expect_no_error({
+    ttm(5, {
+      ttm_expect_true(aa)
+    })
+  })
+})
+rm(aa)
 
 # # i <- 1
 # test_that("ttm_expect_true verbose", {
@@ -142,11 +145,14 @@ test_that("ttm_expect_no_error", {
 })
 
 # ttm_i and ttm_n ----
+iii <- 0
 test_that('ttm_i and ttm_n', {
-  # iii <- 0
   ttm(100, {
-    # iii <<- iii + 1
-    cat('ttm i =', ttm_i(), 'n =', ttm_n(), 'iii =', '', '\n')
+    iii <<- iii + 1
+    expect_equal(iii, ttm_i())
+    expect_equal(100, ttm_n())
+    # cat('ttm i =', ttm_i(), 'n =', ttm_n(), 'iii =', iii, '\n')
     ttm_expect_true(ttm_i() > 20)
   })
 })
+rm(iii)

@@ -25,5 +25,5 @@ ttm_i <- function() {
 #'   ttm_expect_true(x < 0.1)
 #' })
 ttm_n <- function() {
-  options()$'.ttm_i'
+  options()$'.ttm_n'
 }
