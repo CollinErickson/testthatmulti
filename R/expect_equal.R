@@ -63,7 +63,12 @@ ttm_expect_equal <- function(object, expected, ...,
       ttc$equal
     }
     if (passes_testthat) {
-      testthat::expect_equal(object=!!enquo_object, expected=!!enquo_expected, ...)
+      # Can't use same object since there could be randomness
+      testthat::expect_equal(
+        object=  "<testthatmulti::expect_true placeholder>",
+        expected="<testthatmulti::expect_true placeholder>",
+        ...)
+      # testthat::expect_equal(object=!!enquo_object, expected=!!enquo_expected, ...)
     } else {
       options(".ttm_nofails" = FALSE)
     }

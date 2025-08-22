@@ -37,10 +37,15 @@ ttm <- function(n, expr, verbose=0) {
 
   on.exit({
     options(.ttm_mode = NULL)
+    options(.ttm_nofails = NULL)
+    options(.ttm_i = NULL)
+    options(.ttm_n = NULL)
   }, add=T, after=T)
 
   for (i_ttm in 1:n) {
     options(".ttm_nofails" = TRUE)
+    options(".ttm_i" = i_ttm)
+    options(".ttm_n" = n)
 
     if (verbose >= 1) {
       cat("i:", i_ttm, "\n")

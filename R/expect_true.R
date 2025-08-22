@@ -48,7 +48,9 @@ ttm_expect_true <- function(object, info = NULL, label = NULL, verbose=0) {
       isTRUE(object)
     }
     if (passes_testthat) {
-      testthat::expect_true(!!enquo_object, info=info, label=label)
+      # Use placeholder to avoid randomness (this time could give different result)
+      testthat::expect_true(TRUE,
+                            info=info, label=label)
     } else {
       options(".ttm_nofails" = FALSE)
     }
