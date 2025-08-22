@@ -31,7 +31,7 @@
 #' # Will always fail regardless of number of attempts
 #' try({
 #'   ttm(3, {
-#'     ttm_expect_no_error(stop('error))
+#'     ttm_expect_no_error(stop('error'))
 #'   })
 #' })
 ttm_expect_no_error <- function(object, message = NULL, class = NULL, verbose=0) {

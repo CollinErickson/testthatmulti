@@ -21,3 +21,28 @@ Test result
 \description{
 See `testthat::expect_no_error` for details.
 }
+\examples{
+set.seed(0)
+
+# 1 attempt, all pass
+ttm(1, {
+  ttm_expect_no_error(1)
+})
+
+# Fails first ~10 times, then passes
+ttm(100, {
+  ttm_expect_no_error({
+    if (runif(1) > 0.1) {
+      print(1)
+      stop('give error')
+    }
+  })
+})
+
+# Will always fail regardless of number of attempts
+try({
+  ttm(3, {
+    ttm_expect_no_error(stop('error'))
+  })
+})
+}
