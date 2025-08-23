@@ -52,18 +52,16 @@ ttm_expect_error <- function(object, info = NULL, label = NULL, verbose=0) {
     }
     if (passes_testthat) {
       # Can't rerun enquo_object, just put placeholder
-      testthat::expect_error(stop("<testthatmulti::expect_error placeholder"),
+      testthat::expect_error(stop("<testthatmulti::expect_error placeholder>"),
                              info=info, label=label)
     } else {
       options(".ttm_nofails" = FALSE)
     }
-  } else if (.ttm_mode == "mustpass") {
+  } else {
+    stopifnot(.ttm_mode == "mustpass")
     if (verbose >= 1) {
       print('mustpass')
     }
     testthat::expect_error(!!enquo_object, info=info, label=label)
-  } else {
-    print(.ttm_mode)
-    stop(paste0('Bad .ttm_mode'))
   }
 }

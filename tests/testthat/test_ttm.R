@@ -102,7 +102,7 @@ test_that("ttm_expect_true verbose", {
 
   expect_no_error(
     capture.output(
-      ttm(2, {ttm_expect_true(TRUE, verbose=10)})
+      ttm(2, {ttm_expect_true(ttm_i() == ttm_n(), verbose=10)})
     )
   )
 })
@@ -120,7 +120,7 @@ test_that("ttm expect_equal", {
   expect_no_error({
     ttm(1e2, {
       diceroll <- sample(1:6, 1)
-      print(diceroll)
+      # print(diceroll)
       ttm_expect_equal(diceroll, 6, verbose = 0)
     })
   })

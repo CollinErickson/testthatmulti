@@ -34,7 +34,8 @@
 #'     ttm_expect_no_error(stop('error'))
 #'   })
 #' })
-ttm_expect_no_error <- function(object, message = NULL, class = NULL, verbose=0) {
+ttm_expect_no_error <- function(object, message = NULL, class = NULL,
+                                verbose=0) {
   enquo_object <- rlang::enquo(object)
   .ttm_mode <- getOption(".ttm_mode")
   if (is.null(.ttm_mode)) {
@@ -51,18 +52,16 @@ ttm_expect_no_error <- function(object, message = NULL, class = NULL, verbose=0)
         'try-error')
     }
     if (passes_testthat) {
-      testthat::expect_no_error("<testthatmulti::expect_error placeholder",
+      testthat::expect_no_error("<testthatmulti::expect_no_error placeholder>",
                                 message=message, class=class)
     } else {
       options(".ttm_nofails" = FALSE)
     }
-  } else if (.ttm_mode == "mustpass") {
+  } else {
+    stopifnot(.ttm_mode == "mustpass")
     if (verbose >= 1) {
       print('mustpass')
     }
     testthat::expect_no_error(!!enquo_object, message=message, class=class)
-  } else {
-    print(.ttm_mode)
-    stop(paste0('Bad .ttm_mode'))
   }
 }

@@ -1,10 +1,7 @@
 # TODO
 
-* Fix working inside of test_that
-
-* Do nested ttms work?
-
-* ttm_expect_is
+* Do nested ttms work? Maybe add an id so they can be nested and treated
+separately?
 
 * Test coverage
 
@@ -15,4 +12,4 @@ test count (can be 2x test count if fails first time then repeats).
 * What if they aren't called inside of ttm? Should they give error? Or just run
 testthat version?
 
-* Can I remove env mess from exptrue now that env mess is in ttm?
+* Add to README
