@@ -39,11 +39,18 @@ ttm_expect_true <- function(object, info = NULL, label = NULL, verbose=0) {
   if (is.null(.ttm_mode)) {
     .ttm_mode <- "mustpass"
   }
+
+  # Need to access environment of ttm's parent
+  e1 <- rlang::quo_get_env(enquo_object)
+  if (length(ls(e1)) > 0) {
+    parent.env(e1) <- options()$.ttm_parent_env
+  }
+
   if (.ttm_mode == "canfail") {
     if (verbose >= 1) {
       print('in fake mode canfail')
     }
-    # browser()
+
     # passes_testthat <- {
     #   isTRUE(object)
     # }
@@ -54,12 +61,14 @@ ttm_expect_true <- function(object, info = NULL, label = NULL, verbose=0) {
           rlang::quo_get_expr(enquo_object),
           # env=rlang::caller_env(n=4)
           # env=parent.frame()
-          env=rlang::quo_get_env(enquo_object)
+          # env=rlang::quo_get_env(enquo_object)
+          env=e1
         )
       )
     }
     if (passes_testthat) {
-      # Use placeholder to avoid randomness (this time could give different result)
+      # Use placeholder to avoid randomness (this time could give different
+      # result)
       testthat::expect_true(TRUE,
                             info=info, label=label)
     } else {
@@ -69,7 +78,13 @@ ttm_expect_true <- function(object, info = NULL, label = NULL, verbose=0) {
     if (verbose >= 1) {
       print('mustpass')
     }
-    testthat::expect_true(!!enquo_object, info=info, label=label)
+    testthat::expect_true(
+      # !!enquo_object
+      rlang::eval_tidy(
+        rlang::quo_get_expr(enquo_object),
+        env=e1
+      ),
+      info=info, label=label)
   } else {
     print(.ttm_mode)
     stop(paste0('Bad .ttm_mode'))

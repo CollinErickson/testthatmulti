@@ -5,7 +5,14 @@ test_that("ttm verbose", {
   expect_no_error(capture.output(ttm(1, {
     ttm_expect_true(1 == 1, verbose = 10)
   }, verbose = 10)))
+})
 
+
+test_that("ttm references", {
+  aa <- 1
+  expect_no_error(ttm(1, {
+    aa
+  }))
 })
 
 # ttm_expect_true ----
@@ -26,17 +33,35 @@ test_that("ttm expect_true", {
   }))
 })
 
-# This doesn't work well with testthat
-# aa <- TRUE
-# test_that("ttm_expect_true - refer to outside obj", {
-#   # Refer to an object outside of ttm
-#   expect_no_error({
-#     ttm(5, {
-#       ttm_expect_true(aa)
-#     })
-#   })
-# })
-# rm(aa)
+# Referring to other objects in tests from other environments
+# causes issues
+aa <- TRUE
+test_that("ttm_expect_true - refer to outside obj", {
+  # Refer to an object outside of ttm
+  bb <- TRUE
+
+  # Works using ttm
+  expect_no_error({
+    ttm(5, {
+      cc <- TRUE
+      ttm_expect_true(aa && bb && cc)
+      rm(cc)
+    })
+  })
+
+  # Works using tt (need to test both)
+  expect_no_error({
+    ttm(1, {
+      cc <- TRUE
+      aa && bb && cc
+      ttm_expect_true(aa && bb && cc)
+      rm(cc)
+    })
+  })
+
+  rm(bb)
+})
+rm(aa)
 
 # # i <- 1
 # test_that("ttm_expect_true verbose", {

@@ -40,7 +40,12 @@ ttm <- function(n, expr, verbose=0) {
     options(.ttm_nofails = NULL)
     options(.ttm_i = NULL)
     options(.ttm_n = NULL)
+    options(.ttm_parent_env = NULL)
   }, add=T, after=T)
+
+  # Need to store parent env. Otherwise parent.env of expr would be this
+  # package instead of where it was called.
+  options(".ttm_parent_env" = parent.frame())
 
   for (i_ttm in 1:n) {
     options(".ttm_nofails" = TRUE)
@@ -57,7 +62,14 @@ ttm <- function(n, expr, verbose=0) {
       options(".ttm_mode" = "mustpass")
     }
 
-    eval(substitute(expr))
+    # Run the expr
+    # Old, simple way. Failed due to environments, it needs vars from parent.
+    # eval(substitute(expr))
+    enquo_expr <- rlang::enquo(expr)
+    rlang::eval_tidy(
+      rlang::quo_get_expr(enquo_expr),
+      env=parent.frame()
+    )
 
     .ttm_nofails <- getOption(".ttm_nofails")
     stopifnot(length(.ttm_nofails) == 1, is.logical(.ttm_nofails),
