@@ -18,3 +18,6 @@ test count (can be 2x test count if fails first time then repeats).
 
 * If I use a var named expr/n/verbose/i_ttm, does it cause issue? If yes,
 rename them to be very obscure and unlikely to clash.
+
+* What if they aren't called inside of ttm? Should they give error? Or just run
+testthat version?

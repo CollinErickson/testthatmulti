@@ -117,9 +117,41 @@ test_that(".ttm_mode error", {
   options('.ttm_mode' = NULL)
 })
 
-test_that("ttm_expect_true edge cases", {
+test_that("ttm_expect_equal edge cases", {
   expect_no_error(ttm_expect_equal(1, 1))
 })
+
+
+# Referring to other objects in tests from other environments
+# causes issues
+aa <- TRUE
+test_that("ttm_expect_equal - refer to outside obj", {
+  # Refer to an object outside of ttm
+  bb <- TRUE
+
+  # Works using ttm
+  expect_no_error({
+    ttm(5, {
+      cc <- TRUE
+      ttm_expect_equal(aa && bb, cc)
+      rm(cc)
+    })
+  })
+
+  # Works using tt (need to test both)
+  expect_no_error({
+    ttm(1, {
+      cc <- TRUE
+      aa && bb && cc
+      ttm_expect_equal(aa && bb, cc)
+      rm(cc)
+    })
+  })
+
+  rm(bb)
+})
+rm(aa)
+
 
 # ttm_expect_error ----
 test_that("ttm_expect_error", {
@@ -146,6 +178,37 @@ test_that("ttm_expect_error", {
 })
 
 
+# Referring to other objects in tests from other environments
+# causes issues
+aa <- TRUE
+test_that("ttm_expect_error - refer to outside obj", {
+  # Refer to an object outside of ttm
+  bb <- TRUE
+
+  # Works using ttm
+  expect_no_error({
+    ttm(5, {
+      cc <- TRUE
+      ttm_expect_error(if ((aa && bb && cc)) {stop('aabbcc')})
+      rm(cc)
+    })
+  })
+
+  # Works using tt (need to test both)
+  expect_no_error({
+    ttm(1, {
+      cc <- TRUE
+      aa && bb && cc
+      ttm_expect_error(if ((aa && bb && cc)) {stop('aabbcc')})
+      rm(cc)
+    })
+  })
+
+  rm(bb)
+})
+rm(aa)
+
+
 # ttm_expect_no_error ----
 test_that("ttm_expect_no_error", {
   expect_no_error(
@@ -169,6 +232,37 @@ test_that("ttm_expect_no_error", {
     })
   )
 })
+
+# Referring to other objects in tests from other environments
+# causes issues
+aa <- TRUE
+test_that("ttm_expect_no_error - refer to outside obj", {
+  # Refer to an object outside of ttm
+  bb <- TRUE
+
+  # Works using ttm
+  expect_no_error({
+    ttm(5, {
+      cc <- TRUE
+      ttm_expect_no_error(aa && bb && cc)
+      rm(cc)
+    })
+  })
+
+  # Works using tt (need to test both)
+  expect_no_error({
+    ttm(1, {
+      cc <- TRUE
+      aa && bb && cc
+      ttm_expect_no_error(aa && bb && cc)
+      rm(cc)
+    })
+  })
+
+  rm(bb)
+})
+rm(aa)
+
 
 # ttm_i and ttm_n ----
 test_that('ttm_i and ttm_n', {
