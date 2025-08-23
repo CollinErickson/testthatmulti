@@ -40,12 +40,13 @@ ttm <- function(n, expr, verbose=0) {
     options(.ttm_nofails = NULL)
     options(.ttm_i = NULL)
     options(.ttm_n = NULL)
-    options(.ttm_parent_env = NULL)
+    # options(.ttm_parent_env = NULL)
   }, add=T, after=T)
 
-  # Need to store parent env. Otherwise parent.env of expr would be this
-  # package instead of where it was called.
-  options(".ttm_parent_env" = parent.frame())
+  # Don't need env anymore since it is included in eval in this func
+  # # Need to store parent env. Otherwise parent.env of expr would be this
+  # # package instead of where it was called.
+  # options(".ttm_parent_env" = parent.frame())
 
   for (i_ttm in 1:n) {
     options(".ttm_nofails" = TRUE)

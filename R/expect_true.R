@@ -40,32 +40,33 @@ ttm_expect_true <- function(object, info = NULL, label = NULL, verbose=0) {
     .ttm_mode <- "mustpass"
   }
 
-  # Need to access environment of ttm's parent
-  e1 <- rlang::quo_get_env(enquo_object)
-  if (length(ls(e1)) > 0) {
-    parent.env(e1) <- options()$.ttm_parent_env
-  }
+  # No longer need env since ttm keeps it
+  # # Need to access environment of ttm's parent
+  # e1 <- rlang::quo_get_env(enquo_object)
+  # if (length(ls(e1)) > 0) {
+  #   parent.env(e1) <- options()$.ttm_parent_env
+  # }
 
   if (.ttm_mode == "canfail") {
     if (verbose >= 1) {
       print('in fake mode canfail')
     }
 
-    # passes_testthat <- {
-    #   isTRUE(object)
-    # }
-    # Not sure all this is needed, tried to fix some test stuff
     passes_testthat <- {
-      isTRUE(
-        rlang::eval_tidy(
-          rlang::quo_get_expr(enquo_object),
-          # env=rlang::caller_env(n=4)
-          # env=parent.frame()
-          # env=rlang::quo_get_env(enquo_object)
-          env=e1
-        )
-      )
+      isTRUE(object)
     }
+    # Env no needed since ttm has it, stick to simple eval above
+    # passes_testthat <- {
+    #   isTRUE(
+    #     rlang::eval_tidy(
+    #       rlang::quo_get_expr(enquo_object),
+    #       # env=rlang::caller_env(n=4)
+    #       # env=parent.frame()
+    #       # env=rlang::quo_get_env(enquo_object)
+    #       env=e1
+    #     )
+    #   )
+    # }
     if (passes_testthat) {
       # Use placeholder to avoid randomness (this time could give different
       # result)
@@ -79,11 +80,11 @@ ttm_expect_true <- function(object, info = NULL, label = NULL, verbose=0) {
       print('mustpass')
     }
     testthat::expect_true(
-      # !!enquo_object
-      rlang::eval_tidy(
-        rlang::quo_get_expr(enquo_object),
-        env=e1
-      ),
+      !!enquo_object,
+      # rlang::eval_tidy(
+      #   rlang::quo_get_expr(enquo_object),
+      #   env=e1
+      # ),
       info=info, label=label)
   } else {
     print(.ttm_mode)
