@@ -15,6 +15,14 @@ test_that("ttm references", {
   }))
 })
 
+test_that("ttm reuse var name", {
+  n <- 10
+  expect_no_error(ttm(5, {
+    cat('n=', n, '\n')
+    ttm_expect_equal(n, 10)
+  }))
+})
+
 # ttm_expect_true ----
 test_that("ttm expect_true", {
   expect_no_error({
@@ -85,6 +93,20 @@ test_that("ttm_expect_true edge cases", {
   expect_no_error(ttm_expect_true(1 == 1))
 })
 
+test_that("ttm_expect_true verbose", {
+  expect_no_error(
+    capture.output(
+      ttm(1, {ttm_expect_true(TRUE, verbose=10)})
+    )
+  )
+
+  expect_no_error(
+    capture.output(
+      ttm(2, {ttm_expect_true(TRUE, verbose=10)})
+    )
+  )
+})
+
 # ttm_expect_equal ----
 test_that("ttm expect_equal", {
   expect_no_error(ttm(3, ttm_expect_equal(1, 1)))
@@ -152,6 +174,13 @@ test_that("ttm_expect_equal - refer to outside obj", {
 })
 rm(aa)
 
+test_that("ttm_expect_equal verbose", {
+  expect_no_error(capture.output({
+    ttm(1, {
+      ttm_expect_equal(1,1,verbose=10)
+    })
+  }))
+})
 
 # ttm_expect_error ----
 test_that("ttm_expect_error", {
@@ -171,7 +200,7 @@ test_that("ttm_expect_error", {
     ttm(100, {
 
       ttm_expect_error(
-      if (runif(1) > 0.1) {stop('error')}
+        if (runif(1) > 0.1) {stop('error')}
       )
     })
   )
@@ -208,6 +237,29 @@ test_that("ttm_expect_error - refer to outside obj", {
 })
 rm(aa)
 
+test_that("ttm_expect_error verbose", {
+  expect_no_error(capture.output({
+    ttm(1, {
+      ttm_expect_error({
+        stop()
+      }, verbose=10)
+    })
+  }))
+
+  expect_no_error(capture.output({
+    ttm(1, {
+      ttm_expect_error({
+        stop()
+      }, verbose=10)
+    })
+  }))
+})
+
+test_that("ttm_expect_error outside ttm", {
+  expect_no_error({
+    ttm_expect_error(stop())
+  })
+})
 
 # ttm_expect_no_error ----
 test_that("ttm_expect_no_error", {
@@ -263,6 +315,26 @@ test_that("ttm_expect_no_error - refer to outside obj", {
 })
 rm(aa)
 
+
+test_that("ttm_expect_no_error verbose", {
+  expect_no_error(capture.output({
+    ttm(1, {
+      ttm_expect_no_error(1, verbose=10)
+    })
+  }))
+
+  expect_no_error(capture.output({
+    ttm(1, {
+      ttm_expect_no_error(1, verbose=10)
+    })
+  }))
+})
+
+test_that("ttm_expect_no_error outside ttm", {
+  expect_no_error({
+    ttm_expect_no_error(TRUE)
+  })
+})
 
 # ttm_i and ttm_n ----
 test_that('ttm_i and ttm_n', {
