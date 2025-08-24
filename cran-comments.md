@@ -3,26 +3,29 @@ Added new functionality and fixed issues.
 
 ## Test environments
 
-* local Windows 11, R 4.4.3
+* local Windows 11, R 4.5.1
 * Ubuntu 24.04 (on GitHub Actions), R 4.5.1
 * win-builder (devel and release)
 * R-hub (Windows, Ubuntu Linux, Fedora Linux, Debian Linux)
 * devtools check_mac_release
 
-
 ## R CMD check results
 
-Local Windows (2/3/24): 0 errors/warnings/notes
-
-GitHub Actions (8/22/25): Status: OK
+(Note to self: check Rhub with rhub::rhub_check(), then 1,3,5,20,21)
 
 R-hub:
-Ubuntu Linux (1/30/24): 2 NOTEs for tidy not being found and new submission
-Windows Server (1/30/24): 3 NOTEs that aren't real issues
-Fedora Linux (1/30/24): 2 NOTEs for tidy not being found and new submission
+linux (R-devel) (8/23/25): Status: OK
+macos (R-devel) (8/23/25): Status: OK
+windows (r-devel) (8/23/25): Status: OK
+intel (8/23/25): Status: OK
+mkl (8/23/25): Status: OK
 
-winbuilder devel (1/28/24): 1 NOTE, not an issue
-winbuilder release (1/30/24): 1 NOTE, not an issue
+Local Windows (8/24/25): 0 errors/warnings/notes
+
+GitHub Actions (8/23/25): Status: OK
+
+winbuilder devel (8/24/25): Status: OK
+winbuilder release (8/24/25): Status: OK
 
 check_mac_release (8/23/25): Status: OK
 
