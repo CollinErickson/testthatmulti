@@ -1,7 +1,7 @@
 Package: testthatmulti
 Type: Package
 Title: Testing for R Packages with Multiple Attempts for Noisy Tests
-Version: 0.2.0
+Version: 0.2.0.9000
 Authors@R: person(given = "Collin",
                   family = "Erickson",
                   role = c("aut", "cre"),
