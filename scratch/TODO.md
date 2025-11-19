@@ -1,5 +1,7 @@
 # TODO
 
+* Refer to vars in previous expects, see scratch file
+
 * Do nested ttms work? Maybe add an id so they can be nested and treated
 separately?
 
@@ -13,3 +15,5 @@ test count (can be 2x test count if fails first time then repeats).
 testthat version?
 
 * Add to README
+
+* less_than, more_than
